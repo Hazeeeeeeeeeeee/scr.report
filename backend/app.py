@@ -19,7 +19,7 @@ raid_ids = {
     'Garden_of_Salvation': '7dgng872',
     'Deep_Stone_Crypt': 'zd3oymnd',
     'Vault_of_Glass': 'q25x58vk',
-    'Vow_of_the_Disciple':' 7kj909n2',
+    'Vow_of_the_Disciple':'7kj909n2',
     'Kings_Fall': '9kvlp902',
     'Root_of_Nightmares': '9d88x6ld'
 }
@@ -34,21 +34,56 @@ def raid(raid_name):
     response = requests.get(f'https://www.speedrun.com/api/v1/leaderboards/4d7y5zd7/category/{raid_id}')
 
     data = json.loads(response.text)
+    categories = get_categories_raid(raid_name)
+    key_count = [i for i in categories]
+    value_count = [1 for i in key_count]
+    count = {key: value for key, value in zip(key_count, value_count)}
 
     leaderboard = []
     for i, run in enumerate(data['data']['runs'], start=1):
         player_names = [get_player_name(player) for player in run['run']['players']]
 
         run_time = format_duration(run['run']['times']['primary'])
-
-        leaderboard.append({
-            'rank': i,
-            'players': player_names,
-            'time': run_time
-        })
-
+        if(categories['id'] == None):
+            leaderboard.append({
+                'category': 'Normal',
+                'rank': i,
+                'players': player_names,
+                'time': run_time
+            })
+        else:
+            leaderboard.append({
+                'category': categories[run['run']['values'][categories['id']]],
+                'rank': count[run['run']['values'][categories['id']]],
+                'players': player_names,
+                'time': run_time
+            })
+            count[run['run']['values'][categories['id']]]+=1
+            
 
     return jsonify(leaderboard)
+
+
+def get_categories_raid(raid_name):
+    raid_id = raid_ids.get(raid_name)
+    
+    response = requests.get(f'https://www.speedrun.com/api/v1/categories/{raid_id}/variables')
+
+    data = json.loads(response.text)
+    categories = {}
+
+    for sub in enumerate(data['data']):
+        if 'category' in sub[1] and sub[1]['category'] == raid_id:
+            categories['id'] = sub[1]['id']
+            
+            for category_id in sub[1]['values']['values']:
+                categories[category_id] = sub[1]['values']['values'][category_id]['label']
+
+            return categories
+    else:
+        categories['id'] = None
+        return categories
+
 
 def get_player_name(player):
     if player['rel'] == 'user':
@@ -69,6 +104,7 @@ def get_player_name(player):
         player_cache[player_id] = player_name
 
         return player_name
+    
     elif player['rel'] == 'guest':
         return player['name']
 

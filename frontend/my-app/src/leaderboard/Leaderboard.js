@@ -42,6 +42,7 @@ const Leaderboard = () => {
                 {leaderboardData.map((run, index) => (
                     <thead>
                         <tr key={index}>
+                            <th>Category: {run.category}</th>
                             <th>Rank: {run.rank}</th>
                             <th>Players: {run.players.join(', ')}</th>
                             <th>Time: {run.time}</th>
