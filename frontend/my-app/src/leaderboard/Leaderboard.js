@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import './styles.css';
 
 const Leaderboard = () => {
@@ -8,6 +8,11 @@ const Leaderboard = () => {
 
     const params = useParams();
     const { category, name } = params;
+    const navigate = useNavigate();
+
+
+    const displayName = name.replace(/_/g, ' ');
+
 
     useEffect(() => {
 
@@ -33,7 +38,8 @@ const Leaderboard = () => {
 
     return (
         <div>
-            <h1> {name} Leaderboard</h1>
+          <button onClick={() => navigate('/home')}>Home</button>
+            <h1>{displayName} Leaderboard</h1>
             <table>
                 <thead>
                     <tr>
