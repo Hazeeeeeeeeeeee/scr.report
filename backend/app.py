@@ -10,18 +10,28 @@ app.config['CORS_HEADERS'] = 'Content-Type'
 player_cache = {}
 
 raid_ids = {
-    'Leviathan': 'jdzvzqvk',
+    'Leviathan_Normal': 'jdzvzqvk?var-68kmerkl=4qy4j26q',
+    'Leviathan_Prestige': 'jdzvzqvk?var-68kmerkl=mln3zvoq',
     'Eater_of_Worlds': '824r4ygd',
     'Spire_of_Stars': '9d8g973k',
-    'Last_Wish': '02qlzqpk?var-8107wkol=1',
-    'Scourge_of_the_Past': 'mkernrnd',
+    'Last_Wish_All_Encounters': '02qlzqpk?var-j84km3wn=8107wkol',
+    'Last_Wish_Any%':'02qlzqpk?var-j84km3wn=9qjdxk7q',
+    'Last_Wish_Trio_All_Encounters':'02qlzqpk?var-j84km3wn=810292jq',
+    'Scourge_of_the_Past_No_Major_Glitches': 'mkernrnd?var-5ly7jpgl=mln32enq',
+    'Scourge_of_the_Past_Any%': 'mkernrnd?var-5ly7jpgl=4qy467dq',
     'Crown_of_Sorrow': '8241elw2',
-    'Garden_of_Salvation': '7dgng872',
-    'Deep_Stone_Crypt': 'zd3oymnd',
-    'Vault_of_Glass': 'q25x58vk',
-    'Vow_of_the_Disciple':'7kj909n2',
-    'Kings_Fall': '9kvlp902',
-    'Root_of_Nightmares': '9d88x6ld'
+    'Garden_of_Salvation_Any%': '7dgng872?var-wl3d3gy8=4lxn3041',
+    'Garden_of_Salvation_Trio': '7dgng872?var-wl3d3gy8=814z3kvl',
+    'Deep_Stone_Crypt_Any%': 'zd3oymnd?var-789dj59n=zqo4dmx1',
+    'Deep_Stone_Crypt_Trio':'zd3oymnd?var-789dj59n=013g3wxl',
+    'Vault_of_Glass_Any%': 'q25x58vk?var-e8mqrmwn=jqzj7eml',
+    'Vault_of_Glass_Trio': 'q25x58vk?var-e8mqrmwn=klrgw42q',
+    'Vow_of_the_Disciple_Any%':'7kj909n2?var-gnx2yo48=q75vror1',
+    'Vow_of_the_Disciple_Trio':'7kj909n2?var-gnx2yo48=1gnw26ol',
+    'Kings_Fall': '9kvlp902?var-9l75odz8=192joekq',
+    'Kings_Fall': '9kvlp902?var-9l75odz8=12v6yjkq',
+    'Root_of_Nightmares_Any%': '9d88x6ld?var-jlzxvz78=lx5v72r1',
+    'Root_of_Nightmares_Trio': '9d88x6ld?var-jlzxvz78=14o50mjq'
 }
 
 @app.route('/raid/<raid_name>')
