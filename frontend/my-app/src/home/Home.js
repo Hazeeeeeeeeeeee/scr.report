@@ -78,8 +78,11 @@ function Home() {
         </div>
 
         <h2>King's Fall</h2>
-        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Kings_Fall')}>
-            King's Fall
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Kings_Fall_Any%')}>
+            King's Fall Any%
+        </div>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Kings_Fall_Trio')}>
+            King's Fall Trio
         </div>
 
         <h2>Root of Nightmares</h2>
