@@ -40,113 +40,59 @@ def raid(raid_name):
     raid_id = raid_ids.get(raid_name)
     if not raid_id:
         return jsonify({'error': 'Invalid raid name'}), 400
-
     response = requests.get(f'https://www.speedrun.com/api/v1/leaderboards/4d7y5zd7/category/{raid_id}')
 
     data = json.loads(response.text)
-    categories = get_categories_raid(raid_name)
-    key_count = [i for i in categories]
-    value_count = [1 for i in key_count]
-    count = {key: value for key, value in zip(key_count, value_count)}
 
     leaderboard = []
     for i, run in enumerate(data['data']['runs'], start=1):
         player_names = [get_player_name(player) for player in run['run']['players']]
 
         run_time = format_duration(run['run']['times']['primary'])
-        if(categories['id'] == None):
-            leaderboard.append({
-                'category': 'Normal',
-                'rank': i,
-                'players': player_names,
-                'time': run_time
-            })
-        else:
-            leaderboard.append({
-                'category': categories[run['run']['values'][categories['id']]],
-                'rank': count[run['run']['values'][categories['id']]],
-                'players': player_names,
-                'time': run_time
-            })
-            count[run['run']['values'][categories['id']]]+=1
-            
+
+        leaderboard.append({
+            'rank': i,
+            'players': player_names,
+            'time': run_time
+        })
+
 
     return jsonify(leaderboard)
-
-
-def get_categories_raid(raid_name):
-    raid_id = raid_ids.get(raid_name)
-    
-    response = requests.get(f'https://www.speedrun.com/api/v1/categories/{raid_id}/variables')
-
-    data = json.loads(response.text)
-    categories = {}
-
-    for sub in enumerate(data['data']):
-        if 'category' in sub[1] and sub[1]['category'] == raid_id:
-            categories['id'] = sub[1]['id']
-            
-            for category_id in sub[1]['values']['values']:
-                categories[category_id] = sub[1]['values']['values'][category_id]['label']
-
-            return categories
-    else:
-        categories['id'] = None
-        return categories
-
 
 def get_player_name(player):
     if player['rel'] == 'user':
         player_id = player['id']
         if player_id in player_cache:
             return player_cache[player_id]
-
         response = requests.get(f'https://www.speedrun.com/api/v1/users/{player_id}')
-
         data = json.loads(response.text)
-
         if 'data' not in data or 'names' not in data['data'] or 'international' not in data['data']['names']:
             print(f"Error: Unable to get player name for player_id: {player_id}")
             return "Unknown Player"
-
         player_name = data['data']['names']['international']
-
         player_cache[player_id] = player_name
 
         return player_name
-    
     elif player['rel'] == 'guest':
         return player['name']
 
-
-
 def format_duration(duration):
-    # Remove the 'PT' prefix
     duration = duration[2:]
-
     hours, minutes, seconds = 0, 0, 0
-
-    # Split the duration into its components
     time_parts = duration.split('H')
     if len(time_parts) > 1:
         hours = int(time_parts[0])
         duration = time_parts[1]
-
     time_parts = duration.split('M')
     if len(time_parts) > 1:
         minutes = int(time_parts[0])
         duration = time_parts[1]
-
     time_parts = duration.split('S')
     if len(time_parts) > 1:
         seconds = int(time_parts[0])
-
-    # Format the duration as a string
     if hours > 0:
         return f'{hours}:{minutes:02d}:{seconds:02d}'
     else:
         return f'{minutes:02d}:{seconds:02d}'
-
-
 if __name__ == '__main__':
     app.run(port=5000)
