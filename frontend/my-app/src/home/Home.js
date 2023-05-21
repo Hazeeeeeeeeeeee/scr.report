@@ -5,52 +5,92 @@ import './styles.css';
 function Home() {
   const navigate = useNavigate();
 
-  const redirectToLeaderboard = (raid) => {
-    navigate(`/leaderboard?raid=${raid}`);
+  const redirectToLeaderboard = (category, name) => {
+    navigate(`/${category}/leaderboard/${name}`);
   };
 
   return (
     <div>
-      <h1>Home</h1>
-      <div className="button" onClick={() => redirectToLeaderboard('Leviathan')}>
-        Click to redirect to Leviathan
-      </div>
-      <div className="button" onClick={() => redirectToLeaderboard('Eater_of_Worlds')}>
-        Click to redirect to Eater of Worlds
-      </div>
-      <div className="button" onClick={() => redirectToLeaderboard('Spire_of_Stars')}>
-        Click to redirect to Spire of Stars
-      </div>
-      <div className="button" onClick={() => redirectToLeaderboard('Last_Wish')}>
-        Click to redirect to Last Wish
-      </div>
-      <div className="button" onClick={() => redirectToLeaderboard('Scourge_of_the_Past')}>
-        Click to redirect to Scourge of the Past
-      </div>
-      <div className="button" onClick={() => redirectToLeaderboard('Crown_of_Sorrow')}>
-        Click to redirect to Crown of Sorrow
-      </div>
-      <div className="button" onClick={() => redirectToLeaderboard('Garden_of_Salvation')}>
-        Click to redirect to Garden of Salvation
-      </div>
-      <div className="button" onClick={() => redirectToLeaderboard('Deep_Stone_Crypt')}>
-        Click to redirect to Deep Stone Crypt
-      </div>
-      <div className="button" onClick={() => redirectToLeaderboard('Vault_of_Glass')}>
-        Click to redirect to Vault of Glass
-      </div>
-      <div className="button" onClick={() => redirectToLeaderboard('Vow_of_the_Disciple')}>
-        Click to redirect to Vow of the Disciple
-      </div>
-      <div className="button" onClick={() => redirectToLeaderboard('Kings_Fall')}>
-        Click to redirect to King's Fall
-      </div>
-      <div className="button" onClick={() => redirectToLeaderboard('Root_of_Nightmares')}>
-        Click to redirect to Root of Nightmares
-      </div>
+        <h1>Home</h1>
+
+        <h2>Leviathan</h2>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Leviathan_Normal')}>
+            Leviathan Normal
+        </div>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Leviathan_Prestige')}>
+            Leviathan Prestige
+        </div>
+
+        <h2>Last Wish</h2>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Last_Wish_All_Encounters')}>
+            Last Wish All Encounters
+        </div>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Last_Wish_Any%')}>
+            Last Wish Any%
+        </div>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Last_Wish_Trio_All_Encounters')}>
+            Last Wish Trio All Encounters
+        </div>
+
+        <h2>Scourge of the Past</h2>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Scourge_of_the_Past_No_Major_Glitches')}>
+            Scourge of the Past No Major Glitches
+        </div>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Scourge_of_the_Past_Any%')}>
+            Scourge of the Past Any%
+        </div>
+
+        <h2>Crown of Sorrow</h2>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Crown_of_Sorrow')}>
+            Crown of Sorrow
+        </div>
+
+        <h2>Garden of Salvation</h2>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Garden_of_Salvation_Any%')}>
+            Garden of Salvation Any%
+        </div>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Garden_of_Salvation_Trio')}>
+            Garden of Salvation Trio
+        </div>
+
+        <h2>Deep Stone Crypt</h2>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Deep_Stone_Crypt_Any%')}>
+            Deep Stone Crypt Any%
+        </div>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Deep_Stone_Crypt_Trio')}>
+            Deep Stone Crypt Trio
+        </div>
+
+        <h2>Vault of Glass</h2>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Vault_of_Glass_Any%')}>
+            Vault of Glass Any%
+        </div>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Vault_of_Glass_Trio')}>
+            Vault of Glass Trio
+        </div>
+
+        <h2>Vow of the Disciple</h2>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Vow_of_the_Disciple_Any%')}>
+            Vow of the Disciple Any%
+        </div>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Vow_of_the_Disciple_Trio')}>
+            Vow of the Disciple Trio
+        </div>
+
+        <h2>King's Fall</h2>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Kings_Fall')}>
+            King's Fall
+        </div>
+
+        <h2>Root of Nightmares</h2>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Root_of_Nightmares_Any%')}>
+            Root of Nightmares Any%
+        </div>
+        <div className="button" onClick={() => redirectToLeaderboard('raid', 'Root_of_Nightmares_Trio')}>
+            Root of Nightmares Trio
+        </div>
     </div>
   );
 }
-
 
 export default Home;

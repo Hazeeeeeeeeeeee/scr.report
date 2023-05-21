@@ -1,20 +1,17 @@
-//http://localhost:3000/leaderboard?raid=
-
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import './styles.css';
 
 const Leaderboard = () => {
     const [leaderboardData, setLeaderboardData] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
-    const raidName = queryParams.get('raid');
+    const params = useParams();
+    const { category, name } = params;
 
     useEffect(() => {
-        console.log(raidName);  // Add this line
-        fetch(`http://localhost:5000/raid/${raidName}`)
+
+        fetch(`http://localhost:5000/${category}/${name}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
@@ -28,29 +25,34 @@ const Leaderboard = () => {
             .catch(error => {
                 console.log('Fetch error: ', error);
             });
-    }, [raidName]);
+    }, [category, name]);
     
     if (loading) {
         return <div>Loading...</div>;
     }
 
     return (
-        
-        <html>
-            <div>
-                <h1>Leaderboard</h1>
-                {leaderboardData.map((run, index) => (
-                    <thead>
+        <div>
+            <h1> {name} Leaderboard</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Players</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {leaderboardData.map((run, index) => (
                         <tr key={index}>
-                            <th>Category: {run.category}</th>
-                            <th>Rank: {run.rank}</th>
-                            <th>Players: {run.players.join(', ')}</th>
-                            <th>Time: {run.time}</th>
+                            <td>{run.rank}</td>
+                            <td>{run.players.join(', ')}</td>
+                            <td>{run.time}</td>
                         </tr>
-                    </thead>
-                ))}
-            </div>
-        </html>
+                    ))}
+                </tbody>
+            </table>
+        </div>
     );
 };
 
