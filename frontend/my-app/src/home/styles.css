@@ -1,3 +1,13 @@
+body {
+  background-color: #f8f8f8;
+  color: #333;
+}
+
+body.dark-mode {
+  background-color: #222;
+  color: #fff;
+}
+
 .button {
     padding: 10px 20px;
     margin: 10px;
@@ -5,9 +15,43 @@
     color: #fff;
     cursor: pointer;
     border-radius: 4px;
-  }
+    width: 280px;
+    text-align: center;
+    transform: scale(0.7);
+}
   
   .button:hover {
     background-color: #0056b3;
   }
   
+.raid_title {
+  text-align: center;
+  color: #333;
+}
+
+.raid{
+  position: absolute;
+  left: 50px;
+}
+
+.sr_report {
+  font-size: 40px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+body.dark-mode .raid_title {
+  color: #fff; /* Set the color for raid title in dark mode */
+}
+
+body.dark-mode .sr_report {
+  color: #fff; /* Set the color for sr.report in dark mode */
+}
+
+.dark_button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+}

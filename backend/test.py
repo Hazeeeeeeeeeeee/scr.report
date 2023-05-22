@@ -2,6 +2,7 @@ import requests
 import json
 
 url = "https://www.speedrun.com/api/v1/games/yd4or2x1/levels?embed=categories.variables.variables"
+url_donjon_strike = "https://www.speedrun.com/api/v1/games/4d7y5zd7/levels?embed=categories.variables.variables"
 
 response = requests.get(url)
 data = response.json()
