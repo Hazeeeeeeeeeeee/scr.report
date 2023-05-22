@@ -1,18 +1,28 @@
-How to install:
-Backend
-1) Install python3
-2) Install python lib: requests, Flask-Cors, Flask
+## How to Install
 
-Frontend
-3) install nodejs https://nodejs.org/en
-4) Open powershell in frontend/my-app
-5) run commands:
+### Backend
+1. Install Python 3.
+2. Install the following Python libraries: `requests`, `Flask-Cors`, `Flask`.
+
+### Frontend
+1. Install Node.js from [https://nodejs.org/en](https://nodejs.org/en).
+2. Open PowerShell in the `frontend/my-app` directory.
+3. Run the following commands:
+    ```shell
     npm install
     npm install react react-dom react-router-dom
+    ```
 
-How to run:
-Backend
-1) python3 .\app.py
+## How to Run
 
-Frontend
-1) npm run start
+### Backend
+1. Run the following command in the terminal:
+    ```shell
+    python3 app.py
+    ```
+
+### Frontend
+1. Run the following command in the terminal:
+    ```shell
+    npm run start
+    ```
