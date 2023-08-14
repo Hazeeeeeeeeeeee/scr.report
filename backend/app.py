@@ -3,7 +3,7 @@ from flask_cors import CORS, cross_origin
 import requests
 import json
 from raid_ids import raid_ids
-from mission_ids import mission_ids
+#from mission_ids import mission_ids
 
 
 app = Flask(__name__)
@@ -126,4 +126,5 @@ def format_duration(duration):
     else:
         return f'{minutes:02d}:{seconds:02d}'
 if __name__ == '__main__':
-    app.run(port=5000)
+    app.run(host='0.0.0.0', port=5000)
+
