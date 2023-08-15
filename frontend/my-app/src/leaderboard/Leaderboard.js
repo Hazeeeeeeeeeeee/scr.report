@@ -16,7 +16,7 @@ const Leaderboard = () => {
 
     useEffect(() => {
         
-        fetch(`http://localhost:5000/${category}/${name}/Solo`)
+        fetch(`http://localhost:5000/${category}/${name}`)
             .then(response => {
                 if (!response.ok) {
                     throw new Error(`HTTP error! status: ${response.status}`);
