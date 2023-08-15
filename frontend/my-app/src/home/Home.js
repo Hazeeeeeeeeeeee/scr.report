@@ -5,15 +5,41 @@ import './styles.css';
 function Home() {
   const navigate = useNavigate();
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [gamesData, setGamesData] = useState([]);
+  
+  const SUPPORTED_GAMES = ["Destiny 2", "Destiny 2 Story", "Destiny 2 Lost Sectors", "Destiny 2 Content Vault"];
 
-  const redirectToLeaderboard = (category, name) => {
-    navigate(`/${category}/leaderboard/${name}`);
+  const redirectToLeaderboard = (gameName, type, name) => {
+    navigate(`/${gameName}/all_leaderboard/${name}`);
   };
+
+
 
   useEffect(() => {
     const savedMode = localStorage.getItem('dark-mode');
     setIsDarkMode(savedMode === 'true');
-  }, []);
+    
+    // Create an array of fetch promises
+    const fetchPromises = SUPPORTED_GAMES.map(game => {
+        return fetch(`http://localhost:5000/v2/${game}/all`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            });
+    });
+
+    // Use Promise.all to wait for all fetch requests to complete
+    Promise.all(fetchPromises)
+        .then(dataArray => {
+            setGamesData(dataArray);
+        })
+        .catch(error => {
+            console.log('Fetch error: ', error);
+        });
+}, []);
+
 
   function toggleDarkMode() {
     const body = document.body;
@@ -27,92 +53,29 @@ function Home() {
   }
 
   return (
-    <div className="home"> 
-    <h1 class="sr_report"> sr.report </h1>
-      <button class="dark_button" id="mode-toggle" onClick={toggleDarkMode}> {isDarkMode ? 'Light Mode' : 'Dark Mode'} </button>
-
-        <div class="raid">
-            <h1 class="raid_title">Raid</h1>
-
-            <h2 class="raid_title">Leviathan</h2>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Leviathan_Normal')}>
-                Leviathan Normal
-            </div>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Leviathan_Prestige')}>
-                Leviathan Prestige
-            </div>
-
-            <h2 class="raid_title">Last Wish</h2>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Last_Wish_All_Encounters')}>
-                Last Wish All Encounters
-            </div>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Last_Wish_Any%')}>
-                Last Wish Any%
-            </div>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Last_Wish_Trio_All_Encounters')}>
-                Last Wish Trio All Encounters
-            </div>
-
-            <h2 class="raid_title">Scourge of the Past</h2>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Scourge_of_the_Past_No_Major_Glitches')}>
-                Scourge of the Past No Major Glitches
-            </div>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Scourge_of_the_Past_Any%')}>
-                Scourge of the Past Any%
-            </div>
-
-            <h2 class="raid_title">Crown of Sorrow</h2>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Crown_of_Sorrow')}>
-                Crown of Sorrow
-            </div>
-
-            <h2 class="raid_title">Garden of Salvation</h2>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Garden_of_Salvation_Any%')}>
-                Garden of Salvation Any%
-            </div>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Garden_of_Salvation_Trio')}>
-                Garden of Salvation Trio
-            </div>
-
-            <h2 class="raid_title">Deep Stone Crypt</h2>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Deep_Stone_Crypt_Any%')}>
-                Deep Stone Crypt Any%
-            </div>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Deep_Stone_Crypt_Trio')}>
-                Deep Stone Crypt Trio
-            </div>
-
-            <h2 class="raid_title">Vault of Glass</h2>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Vault_of_Glass_Any%')}>
-                Vault of Glass Any%
-            </div>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Vault_of_Glass_Trio')}>
-                Vault of Glass Trio
-            </div>
-
-            <h2 class="raid_title">Vow of the Disciple</h2>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Vow_of_the_Disciple_Any%')}>
-                Vow of the Disciple Any%
-            </div>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Vow_of_the_Disciple_Trio')}>
-                Vow of the Disciple Trio
-            </div>
-
-            <h2 class="raid_title">King's Fall</h2>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Kings_Fall')}>
-                King's Fall
-            </div>
-            
-            <h2 class="raid_title">Root of Nightmares</h2>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Root_of_Nightmares_Any%')}>
-                Root of Nightmares Any%
-            </div>
-            <div className="button" onClick={() => redirectToLeaderboard('raid', 'Root_of_Nightmares_Trio')}>
-                Root of Nightmares Trio
-            </div>
-        </div>
+    <div>
+        <button onClick={toggleDarkMode}>
+            {isDarkMode ? 'Light Mode' : 'Dark Mode'}
+        </button>
+        
+        <div className="container">
+          {gamesData.map((game, index) => (
+              <div key={index} className="card">  {/* Add the card class here */}
+                  <h2>{SUPPORTED_GAMES[index]}</h2>
+                  <h3>Levels:</h3>
+                  {game.Levels.map(level => (
+                      <p key={level["Level ID"]} onClick={() => redirectToLeaderboard(SUPPORTED_GAMES[index], 'level', level["Level Name"])}>{level["Level Name"]}</p>
+                  ))}
+                  <h3>Categories:</h3>
+                  {game.Categories.map(category => (
+                      <p key={category["Category ID"]} onClick={() => redirectToLeaderboard(SUPPORTED_GAMES[index], 'category', category["Category Name"])}>{category["Category Name"]}</p>
+                  ))}
+              </div>
+          ))}
+      </div>
     </div>
   );
+
 }
 
 export default Home;

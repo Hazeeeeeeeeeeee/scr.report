@@ -1,10 +1,12 @@
 from flask import Flask, jsonify
+from flask_cors import CORS
 import srcomapi, srcomapi.datatypes as dt
 from category.categories_all_leaderboards import get_category_all_leaderboards
 from level.levels_all_leaderboards import get_levels_all_leaderboards
 
 
 app = Flask(__name__)
+CORS(app)
 api = srcomapi.SpeedrunCom()
 
 SUPPORTED_GAMES = ["Destiny 2", "Destiny 2 Story", "Destiny 2 Lost Sectors", "Destiny 2 Content Vault"]
@@ -66,7 +68,7 @@ def is_category(game, group_name):
     return False
       
 
-@app.route('/v2/<string:game_name>/leaderboards_all/<string:group_name>', methods=['GET'])
+@app.route('/v2/<string:game_name>/all_leaderboards/<string:group_name>', methods=['GET'])
 def get_all_leaderboard(game_name, group_name):
     game = api.search(dt.Game, {"name": game_name})[0]
     
@@ -105,21 +107,5 @@ def get_leaderboard(game_name, group_name, ref_name):
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(debug=True)
-
-
-
-['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_api', '_repr', '_retrieved', 'data', 'embeds', 'endpoint', 'id', 'links', 'miscellaneous', 'name', 'players', 'records', 'rules', 'type', 'variables', 'weblink']   
-['__class__', '__delattr__', '__dict__', '__dir__', '__doc__', '__eq__', '__format__', '__ge__', '__getattr__', '__getattribute__', '__getstate__', '__gt__', '__hash__', '__init__', '__init_subclass__', '__le__', '__lt__', '__module__', '__ne__', '__new__', '__reduce__', '__reduce_ex__', '__repr__', '__setattr__', '__sizeof__', '__str__', '__subclasshook__', '__weakref__', '_api', '_repr', '_retrieved', 'data', 'embeds', 'endpoint', 'id', 'links', 'name', 'rules', 'weblink']

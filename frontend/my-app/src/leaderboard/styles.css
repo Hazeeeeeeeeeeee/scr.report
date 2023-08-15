@@ -1,46 +1,63 @@
-body {
+
+.podium {
     display: flex;
-    flex-direction: column;
+    justify-content: center;
+    margin-top: 20px;
+  }
+  
+  .podium .card {
+    margin: 0 10px;
+  }
+  
+  .first-place {
+    background-color: gold;
+    height: 200px;
+  }
+  
+  .second-place {
+    background-color: silver;
+    height: 175px;
+  }
+  
+  .third-place {
+    background-color: #cd7f32; /* bronze color */
+    height: 150px;
+  }
+  
+  .list-runs {
+    margin-top: 30px;
+  }
+
+  /* styles.css */
+
+.leaderboard-entry {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 16px;
+    margin: 16px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s;
+    display: flex;
+    justify-content: space-between;
     align-items: center;
-    font-family: Arial, sans-serif;
+  }
+  
+  .leaderboard-entry:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+  }
+  
+  .leaderboard-entry p {
     margin: 0;
     padding: 0;
-    background-color: #f0f0f0;
-}
-
-h1 {
-    color: #333;
-}
-
-#loading {
-    margin: 20px 0;
-}
-
-table {
-    border-collapse: collapse;
-    margin: 20px 0;
-    width: 80%;
-}
-
-th, td {
-    border: 1px solid #ccc;
-    padding: 10px;
-    text-align: left;
-}
-
-th {
-    background-color: #4CAF50;
-    color: white;
-}
-
-tr:nth-child(even) {
-    background-color: #f2f2f2;
-}
-
-tr:hover {
-    background-color: #ddd;
-}
-
-footer {
-    margin: 20px 0;
-}
+  }
+  
+  .leaderboard-entry a {
+    color: #007bff;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .leaderboard-entry a:hover {
+    color: #0056b3;
+  }
+  
