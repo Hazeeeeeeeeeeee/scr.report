@@ -12,6 +12,7 @@ def get_subcategories_for_category(category_id):
             subcategory_id = variable['id']
             subcategory_values = {details['label']: f"var-{subcategory_id}={value_id}" for value_id, details in variable['values']['values'].items()}
             subcategories[variable['name']] = subcategory_values
+            print(subcategory_values)
 
     return subcategories
 

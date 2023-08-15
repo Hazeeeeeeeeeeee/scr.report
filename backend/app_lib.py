@@ -38,7 +38,15 @@ def get_all_runs(game_name):
     game = get_supported_game(game_name)
     if game:
         levels = [{"Level Name": level.name, "Level ID": level.id} for level in game.levels]
-        categories = [{"Category Name": category.name, "Category ID": category.id} for category in game.categories]
+        
+        # Filter out categories without leaderboards
+        categories = []
+        for category in game.categories:
+            if category.weblink != game.weblink:
+                categories.append({
+                    "Category Name": category.name,
+                    "Category ID": category.id
+                })
 
         response = {
             "Levels": levels,
@@ -47,6 +55,7 @@ def get_all_runs(game_name):
 
         return jsonify(response)
     return jsonify({"error": "Game not supported"}), 404
+
 
 
 api = srcomapi.SpeedrunCom(); api.debug = 1
@@ -63,36 +72,38 @@ def get_all_leaderboard(game_name, group_name):
     
     if is_category(game, group_name):
         # Handle category logic
-        urls = get_category_all_leaderboards(game_name, group_name)
-        return jsonify(urls)
+        ref_names = get_category_all_leaderboards(game_name, group_name)
+        return jsonify(ref_names)
     else:
-        urls = get_levels_all_leaderboards(game_name, group_name)
-        return jsonify(urls)
+        ref_names = get_levels_all_leaderboards(game_name, group_name)
+        return jsonify(ref_names)
 
 @app.route('/v2/<string:game_name>/leaderboard/<string:group_name>/ref/<string:ref_name>', methods=['GET'])
-def get_precise_leaderboard(game_name, group_name, ref_name):
-    game = api.search(dt.Game, {"name": game_name})[0]
+def get_leaderboard(game_name, group_name, ref_name):
+    game =  api.search(dt.Game, {"name": game_name})[0]
+    game_id = api.search(dt.Game, {"name": game_name})[0].id
 
+    # Determine if it's a category or level
     if is_category(game, group_name):
-
-        urls = get_category_all_leaderboards(game_name, group_name)
-        print (jsonify(urls))
-        leaderboard_url_part = urls.get(ref_name)
-       # if leaderboard_url_part:
-       #     full_url = f"leaderboards/{game.id}/category/{leaderboard_url_part}"
-       #     leaderboard_data = dt.Leaderboard(api, data=api.get(full_url))
-       #     return jsonify({"leaderboard": leaderboard_data})
-       # else:
-       #     return jsonify({"error": "Leaderboard not found"}), 404
+        ref_names = get_category_all_leaderboards(game_name, group_name)
     else:
-        urls = get_levels_all_leaderboards(game_name, group_name)
-        leaderboard_url_part = urls.get(ref_name)
-        if leaderboard_url_part:
-            full_url = f"leaderboards/{game.id}/level/{leaderboard_url_part}"
-            leaderboard_data = dt.Leaderboard(api, data=api.get(full_url))
-            return jsonify({"leaderboard": leaderboard_data})
-        else:
-            return jsonify({"error": "Leaderboard not found"}), 404
+        ref_names = get_levels_all_leaderboards(game_name, group_name)
+
+    # Use the ref_name to look up the corresponding URL
+    constructed_url = ref_names.get(ref_name)
+    if not constructed_url:
+        return jsonify({"error": "Invalid ref_name provided"}), 400
+
+    # Fetch the leaderboard based on whether it's a level or category
+    if is_category(game, group_name):
+        response = api.get(f"leaderboards/{game_id}/category/{constructed_url}")
+    else:
+        response = api.get(f"leaderboards/{game_id}/level/{constructed_url}")
+    
+    return response
+
+
+
 
 
 
