@@ -20,7 +20,6 @@ def build_category_urls(subcategories, game, category_id):
     subcategory_values = [list(values.items()) for values in subcategories.values()]
     urls_dict = {}
     for combination in product(*subcategory_values):
-        query_parts = [f"{name}({value_query})" for name, value_query in combination]
         query_string = "&".join([value_query for _, value_query in combination])
         descriptive_path = "_".join([name for name, _ in combination])
         url = f"{category_id}?{query_string}"
