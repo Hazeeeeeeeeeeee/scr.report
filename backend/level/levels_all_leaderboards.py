@@ -36,6 +36,11 @@ def build_level_urls(level):
 
     return urls_dict
 
+#"id": "n2yjrq12",
+#"name": "Solo",
+#        "data"[
+#            {}
+#        ]
 
 def get_levels_all_leaderboards(game_name, level_name):
     game = api.search(dt.Game, {"name": game_name})[0]

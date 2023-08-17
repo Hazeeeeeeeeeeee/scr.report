@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import './styles.css';
+import './all_leaderboard_styles.css';
 
 function AllLeaderboard() {
   const [leaderboardData, setLeaderboardData] = useState({});
@@ -9,6 +9,7 @@ function AllLeaderboard() {
 
   useEffect(() => {
     fetch(`http://localhost:5000/v2/${gameName}/all_leaderboards/${groupName}`)
+    
       .then(response => response.json())
       .then(data => setLeaderboardData(data))
       .catch(error => console.error('Error fetching leaderboard data:', error));

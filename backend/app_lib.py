@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 api = srcomapi.SpeedrunCom()
 
-SUPPORTED_GAMES = ["Destiny 2", "Destiny 2 Story", "Destiny 2 Lost Sectors", "Destiny 2 Content Vault"]
+SUPPORTED_GAMES = ["Destiny 2", "Destiny 2 Story", "Destiny 2 Lost Sectors"]
 
 def normalize_game_name(game_name):
     return game_name.replace(" ", "").lower()
