@@ -38,9 +38,18 @@ function Home() {
                     </div>
                     <div className={styles.cardBack}>
                         {SUPPORTED_GAMES.map((game, index) => (
-                            <h3 key={index} onClick={(e) => { e.stopPropagation(); redirectToAllRuns(game); }}>{game}</h3>
+                            <div key={index} className={styles.gameContainer} onClick={(e) => { e.stopPropagation(); redirectToAllRuns(game); }}>
+                                <img 
+                                    src={`/asset/Home/${game}.png`} 
+                                    onError={(e) => { e.target.onerror = null; e.target.src="/asset/Home/default.webp"; }} 
+                                    alt={game} 
+                                    className={styles.gameImage}
+                                />
+                                <span className={styles.gameName}>{game}</span>
+                            </div>
                         ))}
                     </div>
+
                 </div>
             </div>
 
