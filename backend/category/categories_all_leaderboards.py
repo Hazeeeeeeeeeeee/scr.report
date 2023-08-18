@@ -1,22 +1,19 @@
-import srcomapi, srcomapi.datatypes as dt
 from itertools import product
+import requests
 
-api = srcomapi.SpeedrunCom(); api.debug = 1
+def get_category_all_leaderboards(category_id):
+    print(f"Loading category leaderboard for id: {category_id}")
+    category_request = requests.get(f"https://www.speedrun.com/api/v1/categories/{category_id}/variables")
+    print(f"Request to: https://www.speedrun.com/api/v1/categories/{category_id}/variables")
+    category_data = category_request.json()['data']
 
-def get_subcategories_for_category(category_id):
     subcategories = {}
-    variables_category = dt.Variable(api, data=api.get(f"categories/{category_id}/variables"))
+    for category_type in category_data:
+        if category_type['is-subcategory']:
+            subcategory_id = category_type['id']
+            categories_inType = {value['label']: f"var-{subcategory_id}={id}" for id, value in category_type['values']['values'].items()}
+            subcategories[category_type['name']] = categories_inType
 
-    for variable in variables_category.data:
-        if variable['is-subcategory']:
-            subcategory_id = variable['id']
-            subcategory_values = {details['label']: f"var-{subcategory_id}={value_id}" for value_id, details in variable['values']['values'].items()}
-            subcategories[variable['name']] = subcategory_values
-            print(subcategory_values)
-
-    return subcategories
-
-def build_category_urls(subcategories, game, category_id):
     subcategory_values = [list(values.items()) for values in subcategories.values()]
     urls_dict = {}
     for combination in product(*subcategory_values):
@@ -24,13 +21,5 @@ def build_category_urls(subcategories, game, category_id):
         descriptive_path = "_".join([name for name, _ in combination])
         url = f"{category_id}?{query_string}"
         urls_dict[descriptive_path] = url
+
     return urls_dict
-
-
-def get_category_all_leaderboards(game_name, group_name):
-    game = api.search(dt.Game, {"name": game_name})[0]
-    for category in game.categories:
-        if category.name == group_name:
-            subcategories = get_subcategories_for_category(category.id)
-            urls = build_category_urls(subcategories, game, category.id)
-            return urls

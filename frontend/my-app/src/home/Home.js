@@ -5,12 +5,18 @@ import styles from './home_styles.module.css';
 function Home() {
   const navigate = useNavigate();
   const SUPPORTED_GAMES = ["Destiny 2", "Destiny 2 Story", "Destiny 2 Lost Sectors"];
+  const GAMES_IDS = 
+    {
+      "Destiny 2": '4d7y5zd7',
+      "Destiny 2 Story": 'yd4or2x1',
+      "Destiny 2 Lost Sectors": 'nd2853vd'
+    }
   
   const [isRunsCardFlipped, setRunsCardFlipped] = useState(false);
   const [isAssetsCardFlipped, setAssetsCardFlipped] = useState(false);
 
   const redirectToAllRuns = (gameName) => {
-    navigate(`/${gameName}/all_runs`);
+    navigate(`/${GAMES_IDS[gameName]}/all_runs`);
   };
 
   const handleRunsCardClick = () => {
