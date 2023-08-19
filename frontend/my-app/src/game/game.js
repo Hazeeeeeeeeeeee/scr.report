@@ -34,8 +34,8 @@ function Game() {
 
     const [leaderboardData, setLeaderboardData] = useState({});
 
-    const fetchLeaderboardData = (gameName, groupName) => {
-        const fetchURL = `http://localhost:5000/v2/${encodeURIComponent(gameName)}/all_leaderboards/${encodeURIComponent(groupName)}`
+    const fetchLeaderboardData = (gameId, groupId, CorL) => {
+        const fetchURL = `http://localhost:5000/v2/${encodeURIComponent(gameId)}/all_leaderboards/${CorL}/${encodeURIComponent(groupId)}`
         console.log("Fetching from fetchLeaderboardData:", fetchURL);
 
         fetch(fetchURL)
@@ -48,10 +48,10 @@ function Game() {
             });
     };
 
-    const handleCardFlip = (gameName, groupName) => {
-        console.log("Card clicked:", gameName, groupName);
-        setFlippedCard(groupName);
-        fetchLeaderboardData(gameName, groupName);
+    const handleCardFlip = (gameId, groupId, CorL) => {
+        console.log("Card clicked:", gameId, groupId);
+        setFlippedCard(groupId);
+        fetchLeaderboardData(gameId, groupId, CorL);
     };
 
     return (
@@ -64,7 +64,7 @@ function Game() {
                     <h2>Categories:</h2>
                     <div className={styles.cardContainer}>
                         {gameData.Categories.map(category => (
-                            <div key={category["Category ID"]} className={`${styles.card} ${flippedCard === category["Category Name"] ? styles.flipped : ''}`} onClick={() => handleCardFlip(gameName, category["Category Name"])}>
+                            <div key={category["Category ID"]} className={`${styles.card} ${flippedCard === category["Category Name"] ? styles.flipped : ''}`} onClick={() => handleCardFlip(gameName, category["Category ID"], "C")}>
                                 <div className={styles.cardFront}>
                                     {category["Category Name"]}
                                 </div>
@@ -96,7 +96,7 @@ function Game() {
                     <h2>Levels:</h2>
                     <div className={styles.cardContainer}>
                         {gameData.Levels.map(level => (
-                            <div key={level["Level ID"]} className={`${styles.card} ${flippedCard === level["Level Name"] ? styles.flipped : ''}`} onClick={() => handleCardFlip(gameName, level["Level Name"])}>
+                            <div key={level["Level ID"]} className={`${styles.card} ${flippedCard === level["Level Name"] ? styles.flipped : ''}`} onClick={() => handleCardFlip(gameName, level["Level ID"], "L")}>
                                 <div className={styles.cardFront}>
                                     {level["Level Name"]}
                                 </div>

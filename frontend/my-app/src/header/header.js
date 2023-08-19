@@ -8,13 +8,19 @@ function Header() {
     const location = useLocation();
 
     const SUPPORTED_GAMES = ["Destiny 2", "Destiny 2 Story", "Destiny 2 Lost Sectors"];
+    const GAMES_IDS = 
+    {
+      "Destiny 2": '4d7y5zd7',
+      "Destiny 2 Story": 'yd4or2x1',
+      "Destiny 2 Lost Sectors": 'nd2853vd'
+    }
 
     const handleLeftClick = () => {
         navigate('/home');
     };
 
     const handleGameClick = (game) => {
-        navigate(`/${game}/all_runs`);
+        navigate(`/${GAMES_IDS[game]}/all_runs`);
     };
 
     return (
