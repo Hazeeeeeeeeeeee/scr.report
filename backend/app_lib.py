@@ -9,14 +9,16 @@ CORS(app)
 
 @app.route('/v2/<string:game_id>/all', methods=['GET'])
 def get_all_runs(game_id):
-    print(game_id)
     
     # Fetch levels using the provided endpoint
+    print(f"Loading categories and levels for id: {game_id}")
     levels_response = requests.get(f"https://www.speedrun.com/api/v1/games/{game_id}/levels")
+    print(f"Request to: https://www.speedrun.com/api/v1/games/{game_id}/levels")
     levels_data = levels_response.json()
     
     # Fetch categories using the provided endpoint
     categories_response = requests.get(f"https://www.speedrun.com/api/v1/games/{game_id}/categories")
+    print(f"Request to: https://www.speedrun.com/api/v1/games/{game_id}/categories")
     categories_data = categories_response.json()
     
     if 'data' in levels_data and 'data' in categories_data:
@@ -43,7 +45,6 @@ def get_all_runs(game_id):
             "Categories": categories
         }
 
-        print(response_data)
         return jsonify(response_data)
     return jsonify({"error": "Data not found"}), 404      
 
