@@ -47,11 +47,30 @@ function Game() {
                 console.error("Error fetching leaderboard data:", error);
             });
     };
+    
 
     const handleCardFlip = (gameId, groupId, CorL) => {
         console.log("Card clicked:", gameId, groupId);
         setFlippedCard(groupId);
         fetchLeaderboardData(gameId, groupId, CorL);
+    };
+
+    const fetch_default_leaderboard_categories = (gameId, groupId) => {
+        const fetchURL = `http://localhost:5000/v2/${gameId}/leaderboard/category/${groupId}`;
+        console.log("Fetching from fetch_default_leaderboard_categories:", fetchURL);
+
+        fetch(fetchURL)
+            .then(response => response.json())
+            .then(data => {
+                setLeaderboardData(data);
+            })
+            .catch(error => {
+                console.error("Error fetching leaderboard data:", error);
+            });
+    };
+
+    const handleCategoryClick = (gameId, groupId) => {
+        fetch_default_leaderboard_categories(gameId, groupId);
     };
 
     return (
@@ -64,30 +83,17 @@ function Game() {
                     <h2>Categories:</h2>
                     <div className={styles.cardContainer}>
                         {gameData.Categories.map(category => (
-                            <div key={category["Category ID"]} className={`${styles.card} ${flippedCard === category["Category Name"] ? styles.flipped : ''}`} onClick={() => handleCardFlip(gameName, category["Category ID"], "category")}>
-                                <div className={styles.cardFront}>
-                                    {category["Category Name"]}
-                                </div>
-                                <div className={styles.cardBack}>
-                                    {/* Display the image for the category */}
-                                    <img 
-                                        src={`/asset/${encodeURIComponent(gameName)}/${encodeURIComponent(category["Category Name"])}.jpg`} 
-                                        alt={category["Category Name"]} 
-                                        className={styles.leaderboardImage}
-                                        onError={(e) => {
-                                            e.target.onerror = null;
-                                            e.target.src = '/asset/default.jpg';
-                                        }}
-                                    />
-                                    {Object.entries(leaderboardData).map(([key, value], index, array) => (
-                                        <React.Fragment key={key}>
-                                            <div>
-                                                {category["Category Name"]} {key}
-                                            </div>
-                                            {index !== array.length - 1 && <hr />} {/* This will add a horizontal line between items */}
-                                        </React.Fragment>
-                                    ))}
-                                </div>
+                            <div key={category["Category ID"]} className={styles.card} onClick={() => handleCategoryClick(gameName, category["Category ID"])}>
+                                {category["Category Name"]}
+                                <img 
+                                    src={`/asset/${encodeURIComponent(gameName)}/${encodeURIComponent(category["Category Name"])}.jpg`} 
+                                    alt={category["Category Name"]} 
+                                    className={styles.leaderboardImage}
+                                    onError={(e) => {
+                                        e.target.onerror = null;
+                                        e.target.src = '/asset/default.jpg';
+                                    }}
+                                />
                             </div>
                         ))}
                     </div>

@@ -64,13 +64,38 @@ def get_all_leaderboard(game_id, group_type, group_id):
 @app.route('/v2/<string:game_id>/leaderboard/<string:group_type>/<string:ref_name>', methods=['GET'])
 def get_leaderboard(game_id, group_type, ref_name):
     if group_type == "category":
-        leaderboard_request = requests.get(f"https://www.speedrun.com/api/v1/leaderboards/{game_id}/category/{ref_name}")
+        # Fetching the variables for the category
+        variables_url = f"https://www.speedrun.com/api/v1/categories/{ref_name}/variables"
+        print("Fetching:", variables_url)
+        variables_request = requests.get(variables_url)
+        variables_data = variables_request.json()
+
+        # Constructing the URL with query parameters for each variable's default value
+        query_parameters = []
+        for variable in variables_data['data']:
+            variable_id = variable['id']
+            default_value = variable['values']['default']
+            query_parameters.append(f"var-{variable_id}={default_value}")
+
+        query_string = "&".join(query_parameters)
+        leaderboard_url = f"https://www.speedrun.com/api/v1/leaderboards/{game_id}/category/{ref_name}?{query_string}"
+        print("Fetching:", leaderboard_url)
+        leaderboard_request = requests.get(leaderboard_url)
         leaderboard_data = leaderboard_request.json()
-        return leaderboard_data
+
+        # Combining the default leaderboard data with the variable details
+        combined_data = {
+            "default_leaderboard": leaderboard_data,
+            "variable_details": variables_data
+        }
+        return jsonify(combined_data)
+
     elif group_type == "level":
-        leaderboard_request = requests.get(f"https://www.speedrun.com/api/v1/leaderboards/{game_id}/level/{ref_name}")
+        level_leaderboard_url = f"https://www.speedrun.com/api/v1/leaderboards/{game_id}/level/{ref_name}"
+        print("Fetching:", level_leaderboard_url)
+        leaderboard_request = requests.get(level_leaderboard_url)
         leaderboard_data = leaderboard_request.json()
-        return leaderboard_data
+        return jsonify(leaderboard_data)
     
     return jsonify({"error": "Invalid group type provided"}), 400
 
