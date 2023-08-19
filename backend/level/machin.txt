@@ -1,0 +1,24 @@
+{
+	data: [
+		name : Solo
+		id : nachin
+		Sub-category : [
+			{
+			name :Difficulty 
+			id: r8r4590n	
+			"is-subcategory": false,
+				value: [
+
+				{
+					name: Normal
+					id:qox895xq
+				}
+				{
+					name: GM
+					id:139op2x1
+				}
+		]
+		]
+		}
+		}
+		
