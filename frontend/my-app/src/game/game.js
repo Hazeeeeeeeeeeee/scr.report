@@ -64,7 +64,7 @@ function Game() {
                     <h2>Categories:</h2>
                     <div className={styles.cardContainer}>
                         {gameData.Categories.map(category => (
-                            <div key={category["Category ID"]} className={`${styles.card} ${flippedCard === category["Category Name"] ? styles.flipped : ''}`} onClick={() => handleCardFlip(gameName, category["Category ID"], "C")}>
+                            <div key={category["Category ID"]} className={`${styles.card} ${flippedCard === category["Category Name"] ? styles.flipped : ''}`} onClick={() => handleCardFlip(gameName, category["Category ID"], "category")}>
                                 <div className={styles.cardFront}>
                                     {category["Category Name"]}
                                 </div>
@@ -96,7 +96,7 @@ function Game() {
                     <h2>Levels:</h2>
                     <div className={styles.cardContainer}>
                         {gameData.Levels.map(level => (
-                            <div key={level["Level ID"]} className={`${styles.card} ${flippedCard === level["Level Name"] ? styles.flipped : ''}`} onClick={() => handleCardFlip(gameName, level["Level ID"], "L")}>
+                            <div key={level["Level ID"]} className={`${styles.card} ${flippedCard === level["Level Name"] ? styles.flipped : ''}`} onClick={() => handleCardFlip(gameName, level["Level ID"], "level")}>
                                 <div className={styles.cardFront}>
                                     {level["Level Name"]}
                                 </div>
