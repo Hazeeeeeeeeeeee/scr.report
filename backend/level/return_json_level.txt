@@ -1,0 +1,44 @@
+{
+    data: 
+    [
+        {
+            name: Solo
+            id: jhgusioh
+            Sub-category: 
+            [
+                {
+                    name :Difficulty 
+                    id: r8r4590n
+                    "is-subcategory": true,
+                    value: 
+                    [
+                        {
+                            name: Normal
+                            id:qox895xq
+                        }
+                        {
+                            name: GM
+                            id:139op2x1
+                        }
+                    ]
+                }
+                {
+                    name :Season 
+                    id: hdrhz
+                    "is-subcategory": false,
+                    value: 
+                    [
+                        {
+                            name: Haunter
+                            id:qox895xq
+                        }
+                        {
+                            name: Arrivals
+                            id:139op2x1
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

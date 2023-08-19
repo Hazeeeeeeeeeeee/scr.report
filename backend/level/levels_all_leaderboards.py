@@ -1,12 +1,6 @@
 from itertools import product
 import requests
 
-#"id": "n2yjrq12",
-#"name": "Solo",
-#        "data"[
-#            {}
-#        ]
-
 def get_levels_all_leaderboards(level_id):
     print(f"Loading level leaderboard for id: {level_id}")
     level_request = requests.get(f"https://www.speedrun.com/api/v1/levels/{level_id}/categories?embed=variables")
