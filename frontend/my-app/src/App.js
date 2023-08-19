@@ -3,8 +3,9 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Home from './home/Home';
 import Leaderboard from './leaderboard/Leaderboard';
 import LeaderboardsAll from './all_leaderboard/all_leaderboard';
-import Game from './game/game';  
+import All_runs from './all_runs/all_runs';  
 import Header from './header/header';
+import CategoryLeaderboard from './categoy_leaderboard/categoy_leaderboard'
 
 function App() {
     return (
@@ -14,8 +15,9 @@ function App() {
                 <Route path="/" element={<Navigate to="/home" replace />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="/:gameName/all_leaderboard/:groupName" element={<LeaderboardsAll />} />
+                <Route path="/:group_type/leaderboard/category/:ref_name" element={<CategoryLeaderboard />} />
                 <Route path="/:gameName/leaderboard/:groupName/ref/:refName" element={<Leaderboard />} />
-                <Route path="/:gameName/all_runs" element={<Game />} />
+                <Route path="/:gameName/all_runs" element={<All_runs />} />
 
                 {/* Add other routes as needed */}
             </Routes>

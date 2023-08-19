@@ -59,7 +59,7 @@ def get_all_leaderboard(game_id, group_type, group_id):
         return jsonify(ref_names)
     else:
         return jsonify({"error": "Invalid group type provided"}), 400
-
+    
 
 @app.route('/v2/<string:game_id>/leaderboard/<string:group_type>/<string:ref_name>', methods=['GET'])
 def get_leaderboard(game_id, group_type, ref_name):
@@ -70,12 +70,19 @@ def get_leaderboard(game_id, group_type, ref_name):
         variables_request = requests.get(variables_url)
         variables_data = variables_request.json()
 
+        # Fetching the category details to get the category name
+        category_details_url = f"https://www.speedrun.com/api/v1/categories/{ref_name}"
+        category_details_request = requests.get(category_details_url)
+        category_details_data = category_details_request.json()
+        category_name = category_details_data['data']['name']
+
         # Constructing the URL with query parameters for each variable's default value
         query_parameters = []
         for variable in variables_data['data']:
-            variable_id = variable['id']
-            default_value = variable['values']['default']
-            query_parameters.append(f"var-{variable_id}={default_value}")
+            if variable['is-subcategory']:
+                variable_id = variable['id']
+                default_value = variable['values']['default']
+                query_parameters.append(f"var-{variable_id}={default_value}")
 
         query_string = "&".join(query_parameters)
         leaderboard_url = f"https://www.speedrun.com/api/v1/leaderboards/{game_id}/category/{ref_name}?{query_string}"
@@ -86,9 +93,12 @@ def get_leaderboard(game_id, group_type, ref_name):
         # Combining the default leaderboard data with the variable details
         combined_data = {
             "default_leaderboard": leaderboard_data,
-            "variable_details": variables_data
+            "variable_details": variables_data['data'],
+            "category_name": category_name
         }
         return jsonify(combined_data)
+
+
 
     elif group_type == "level":
         level_leaderboard_url = f"https://www.speedrun.com/api/v1/leaderboards/{game_id}/level/{ref_name}"
@@ -98,6 +108,7 @@ def get_leaderboard(game_id, group_type, ref_name):
         return jsonify(leaderboard_data)
     
     return jsonify({"error": "Invalid group type provided"}), 400
+
 
 
 if __name__ == '__main__':
