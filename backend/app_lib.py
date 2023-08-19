@@ -1,6 +1,5 @@
 from flask import Flask, jsonify
 from flask_cors import CORS
-import srcomapi, srcomapi.datatypes as dt
 from category.categories_all_leaderboards import get_category_all_leaderboards
 from level.levels_all_leaderboards import get_levels_all_leaderboards
 import requests
@@ -51,10 +50,7 @@ def get_all_runs(game_id):
 
 @app.route('/v2/<string:game_id>/all_leaderboards/<string:group_type>/<string:group_id>', methods=['GET'])
 def get_all_leaderboard(game_id, group_type, group_id):
-    
     if group_type.lower() == "category":
-        # Handle category logic
-        print("hi")
         ref_names = get_category_all_leaderboards(group_id)
         return jsonify(ref_names)
     elif group_type.lower() == "level":
@@ -64,29 +60,18 @@ def get_all_leaderboard(game_id, group_type, group_id):
         return jsonify({"error": "Invalid group type provided"}), 400
 
 
-@app.route('/v2/<string:game_name>/leaderboard/<string:group_name>/ref/<string:ref_name>', methods=['GET'])
-def get_leaderboard(game_name, group_name, ref_name):
-    game =  api.search(dt.Game, {"name": game_name})[0]
-    game_id = api.search(dt.Game, {"name": game_name})[0].id
-
-    # Determine if it's a category or level
-    if is_category(game, group_name):
-        ref_names = get_category_all_leaderboards(game_name, group_name)
-    else:
-        ref_names = get_levels_all_leaderboards(game_name, group_name)
-
-    # Use the ref_name to look up the corresponding URL
-    constructed_url = ref_names.get(ref_name)
-    if not constructed_url:
-        return jsonify({"error": "Invalid ref_name provided"}), 400
-
-    # Fetch the leaderboard based on whether it's a level or category
-    if is_category(game, group_name):
-        response = api.get(f"leaderboards/{game_id}/category/{constructed_url}")
-    else:
-        response = api.get(f"leaderboards/{game_id}/level/{constructed_url}")
+@app.route('/v2/<string:game_id>/leaderboard/<string:group_type>/<string:ref_name>', methods=['GET'])
+def get_leaderboard(game_id, group_type, ref_name):
+    if group_type == "category":
+        leaderboard_request = requests.get(f"https://www.speedrun.com/api/v1/leaderboards/{game_id}/category/{ref_name}")
+        leaderboard_data = leaderboard_request.json()
+        return leaderboard_data
+    elif group_type == "level":
+        leaderboard_request = requests.get(f"https://www.speedrun.com/api/v1/leaderboards/{game_id}/level/{ref_name}")
+        leaderboard_data = leaderboard_request.json()
+        return leaderboard_data
     
-    return response
+    return jsonify({"error": "Invalid group type provided"}), 400
 
 
 if __name__ == '__main__':
